@@ -1,8 +1,9 @@
 # Check health urls and servers
 
-1. Gestor de paquetes para Node.js, [link para descargar gestor](https://github.com/nvm-sh/nvm). Si se prefiere descargar la versión más recientes [aquí](https://nodejs.org/en). El proceso en windows, es siguiente, siguiente, siguiente.
+1. Gestor de paquetes para Node.js, [link para descargar gestor](https://github.com/nvm-sh/nvm).   
+Si se prefiere otra forma, descargar Node.js desde la página oficial [aquí](https://nodejs.org/en). El proceso en windows, es siguiente, siguiente, siguiente.
 
-2. Si optaste por utilizar el gestor paquetes utilizar estos comandos.
+3. Si optaste por utilizar el gestor paquetes utilizar estos comandos, si se instaló directamente Node.js, omitir.
 
 ```
 nvm install 18
@@ -45,3 +46,6 @@ https://youtube.com/
    ![image](https://github.com/bryanSolares/check-health-service-and-page/assets/29617705/27bb453d-24fe-4555-9aa6-1b9e4e053cd7)
 8. Si se desean descargar los resultados, dirigirse al final de la página y exportar los datos
    ![image](https://github.com/bryanSolares/check-health-service-and-page/assets/29617705/dc8114e1-d9d2-4218-a09e-aa5c44e6bfbd)
+
+**Aclaraciones importantes**.
+Las comprobaciones son exitosas para los casos donde la páginas Web no tiene un Exponential Backoff como medida de seguridad. Si la URL se muestra con acceso incorrecto, validar directamente desde navegador.
