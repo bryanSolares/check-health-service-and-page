@@ -16,17 +16,19 @@ nvm use 18
 git clone https://github.com/bryanSolares/check-health-service-and-page.git
 ```
 
-3. Descargar dependencias
+3. Descargar dependencias desde terminal
 
 ```
 npm install
 ```
 
-4. Ejecutar proyecto
+4. Ejecutar proyecto desde terminal
 
 ```
 npm run start
 ```
+![image](https://github.com/bryanSolares/check-health-service-and-page/assets/29617705/ae308806-6caf-4066-a7cd-9dbcc50f09be)
+
 
 5. En navegador dirigirse a http://localhost:3000
    ![image](https://github.com/bryanSolares/check-health-service-and-page/assets/29617705/43aa130e-1aa4-4b5c-b09a-4ea465f56b64)
