@@ -33,10 +33,10 @@ npm run start
 6. El proyecto hace uso de archivo .txt con la siguiente estructura (ver la carpeta de uploads example.txt)
 
 ```
-http://jobpoint.claro.com.gt/
-https://jobpoint.claro.com.gt/
-172.21.200.224:7001,8502,8503,22
-172.21.200.207:7001,8502,8503,22
+http://google.com/
+https://youtube.com/
+192.168.1.1,8502,8503,22
+192.168.1.2:7001,8502,8503,22
 ```
 
 7. Al ejecutar la aplicación simplemente utilizar el botón de cargar archivo y posteriormente esperar al análisis.
