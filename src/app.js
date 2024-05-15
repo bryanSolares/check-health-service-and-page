@@ -1,5 +1,6 @@
 import express from "express";
 import multer from "multer";
+import { memoryStorage } from "multer";
 import morgan from "morgan";
 
 import { fileURLToPath } from "url";
@@ -9,7 +10,7 @@ import fs from "node:fs/promises";
 import { checkWebsite, checkServerConnection } from "./utils/utils.js";
 import { writeCSVFile, writeJSONFile } from "./utils/utils.js";
 
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ storage: memoryStorage() });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,8 +27,9 @@ app.get("/", (_, res) => {
 
 app.post("/upload", upload.single("file"), async (req, res) => {
   try {
-    const filePath = req.file.path;
-    const fileContent = await fs.readFile(filePath, "utf-8");
+    const fileBuffer = req.file.buffer;
+    const fileContent = fileBuffer.toString("utf-8");
+
     const lines = fileContent
       .split("\n")
       .map((line) => line.trim())
@@ -60,14 +62,12 @@ app.get("/export-csv", async (req, res) => {
     const resultsFilePath = join(__dirname, "../uploads", "results.json");
     const csvOutputPath = join(__dirname, "../uploads", "results.csv");
 
-    // Leer los resultados del archivo JSON
     const results = await fs.readFile(resultsFilePath, "utf-8");
     const jsonData = JSON.parse(results);
 
     await writeCSVFile(jsonData);
 
-    // Descargar el archivo CSV
-    res.download(csvOutputPath, "../uploads/results.csv");
+    res.download(csvOutputPath);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
