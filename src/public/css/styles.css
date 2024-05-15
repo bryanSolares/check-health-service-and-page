@@ -1,0 +1,77 @@
+body {
+  background-color: #292828;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+#file-upload {
+  padding: 10px 20px;
+  background-color: #435d78;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#export-csv {
+  padding: 10px 20px;
+  background-color: #435d78;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: none;
+}
+
+#loading {
+  display: none;
+  margin-top: 20px;
+  font-size: 48px;
+  color: #60a4ec;
+}
+
+table {
+  margin: 20px auto;
+  border-collapse: collapse;
+  width: 80%;
+}
+
+th,
+td {
+  border: 1px solid #fff;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #437ab5;
+}
+
+tr:nth-child(even) {
+  background-color: #555;
+}
+
+#counters {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+#counters p {
+  margin: 10px 3px;
+  padding: 10px 10px;
+  border-radius: 10px 10px;
+}
+
+#total {
+  background-color: #007bff;
+}
+
+#successfull {
+  background-color: #16b161;
+}
+
+#unsuccessfull {
+  background-color: #f20202;
+}

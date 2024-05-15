@@ -6,87 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Health check URL and Servers</title>
   <link rel="stylesheet" href="./css/all.css">
-  <style>
-    body {
-      background-color: #292828;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
+  <link rel="stylesheet" href="./css/styles.css">
 
-    #file-upload {
-      padding: 10px 20px;
-      background-color: #435d78;
-      border: none;
-      color: #fff;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    #export-csv {
-      padding: 10px 20px;
-      background-color: #435d78;
-      border: none;
-      color: #fff;
-      font-size: 16px;
-      cursor: pointer;
-      display: none;
-    }
-
-    #loading {
-      display: none;
-      margin-top: 20px;
-      font-size: 48px;
-      color: #60a4ec;
-    }
-
-    table {
-      margin: 20px auto;
-      border-collapse: collapse;
-      width: 80%;
-    }
-
-    th,
-    td {
-      border: 1px solid #fff;
-      padding: 8px;
-      text-align: left;
-    }
-
-    th {
-      background-color: #437ab5;
-    }
-
-    tr:nth-child(even) {
-      background-color: #555;
-    }
-
-    #counters {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    #counters p {
-      margin: 10px 3px;
-      padding: 10px 10px;
-      border-radius: 10px 10px;
-    }
-
-
-    #total {
-      background-color: #007bff;
-
-    }
-
-    #successfull {
-      background-color: #16b161;
-    }
-
-    #unsuccessfull {
-      background-color: #f20202;
-    }
-  </style>
 </head>
 
 <body>
@@ -104,125 +25,12 @@
 
   <div id="results"></div>
 
-  <input type="file" id="file-input" style="display: none;">
+  <input type="file" id="file-input" accept=".txt" style="display: none;">
   <button id="file-upload"><i class="fa-solid fa-upload"></i>Upload File</button>
   <button id="export-csv"><i class="fa-solid fa-file-export"></i>Export to CSV</button>
 
 
-  <script>
-    const fileInput = document.getElementById('file-input');
-    const fileUploadBtn = document.getElementById('file-upload');
-    const exportCsvBtn = document.getElementById('export-csv');
-    const loadingDiv = document.getElementById('loading');
-    const resultsDiv = document.getElementById('results');
-    const totalAnalyzedSpan = document.getElementById('total-analyzed');
-    const totalSuccessfulSpan = document.getElementById('total-successful');
-    const totalUnsuccessfulSpan = document.getElementById('total-unsuccessful');
-
-    fileUploadBtn.addEventListener('click', function () {
-      fileInput.click();
-      loadingDiv.style.display = 'block'; // Mostrar el indicador de carga
-      resultsDiv.innerHTML = ''; // Eliminar la tabla si ya existe
-    });
-
-    fileInput.addEventListener('change', function () {
-      const file = this.files[0];
-      const formData = new FormData();
-      formData.append('file', file);
-
-      loadingDiv.style.display = 'block'; // Mostrar el indicador de carga
-      resultsDiv.innerHTML = ''; // Eliminar la tabla si ya existe
-
-      totalAnalyzedSpan.textContent = "0";
-      totalSuccessfulSpan.textContent = "0";
-      totalUnsuccessfulSpan.textContent = "0";
-
-      fetch('/upload', {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => response.json())
-        .then(data => {
-
-
-          exportCsvBtn.style.display = "inline-block";
-          loadingDiv.style.display = 'none'; // Ocultar el indicador de carga
-          resultsDiv.innerHTML = '';
-
-          const table = document.createElement('table');
-          const headerRow = document.createElement('tr');
-          const headers = ['Server', 'Port', 'Status', "Health"];
-
-          headers.forEach(header => {
-            const th = document.createElement('th');
-            th.textContent = header;
-            headerRow.appendChild(th);
-          });
-
-          table.appendChild(headerRow);
-
-          let successfulCount = 0;
-          let unsuccessfulCount = 0;
-
-          data.forEach(result => {
-            const row = document.createElement('tr');
-            Object.values(result).forEach(value => {
-              const td = document.createElement('td');
-              td.textContent = value;
-              row.appendChild(td);
-            });
-
-            // Añadir icono de check al final de la fila
-            const checkIconCell = document.createElement('td');
-            const checkIcon = document.createElement('i');
-            checkIcon.classList.add('fa', "fa-lg", result.status === 'success' ? 'fa-circle-check' : "fa-times");
-            checkIcon.classList.add(result.status === 'success' ? "fa-bounce" : "fa-shake");
-            checkIcon.style.color = result.status === 'success' ? '#16b161' : '#f20202';
-            checkIconCell.appendChild(checkIcon);
-            row.appendChild(checkIconCell);
-
-            table.appendChild(row);
-
-            if (result.status === 'success') {
-              successfulCount++;
-            } else {
-              unsuccessfulCount++;
-            }
-          });
-
-          totalAnalyzedSpan.textContent = data.length;
-          totalSuccessfulSpan.textContent = successfulCount;
-          totalUnsuccessfulSpan.textContent = unsuccessfulCount;
-
-          resultsDiv.appendChild(table);
-        })
-        .catch(error => {
-          console.error(error);
-          loadingDiv.style.display = 'none'; // Ocultar el indicador de carga en caso de error
-          exportCsvBtn.style.display = "none";
-          alert('An error occurred while uploading file.');
-        });
-    });
-
-    exportCsvBtn.addEventListener('click', function () {
-      fetch('/export-csv')
-        .then(response => response.blob())
-        .then(blob => {
-          const url = window.URL.createObjectURL(new Blob([blob]));
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'results.csv';
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(a);
-        })
-        .catch(error => {
-          console.error(error);
-          alert('An error occurred while exporting to CSV.');
-        });
-    });
-  </script>
+  <script src="./js/script.js"></script>
 </body>
 
 </html>
