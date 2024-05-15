@@ -17,7 +17,12 @@ async function checkWebsite(url) {
     await axios.get(url, { timeout: 20000 });
     return { server: url, port, status: "success" };
   } catch (error) {
-    return { server: url, port, status: error.message };
+    let status = error.message;
+
+    if (status.includes("code 403")) {
+      status = "Se sugiere revisión manual de URL";
+    }
+    return { server: url, port, status };
   }
 }
 
