@@ -19,7 +19,7 @@ async function checkWebsite(url) {
   } catch (error) {
     let status = error.message;
 
-    if (status.includes("code 403")) {
+    if (/code 4[0-9]{2}/.test(status)) {
       status = "Se sugiere revisión manual de URL";
     }
     return { server: url, port, status };
